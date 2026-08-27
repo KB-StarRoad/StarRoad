@@ -59,3 +59,8 @@ hs_err_pid*
 replay_pid*
 
 
+### RAG 생성물 ###
+# 벡터 색인 — DB 에서 언제든 재생성 가능하므로 커밋하지 않는다
+rag-index.json
+# 다운로드된 ONNX 임베딩 모델 캐시
+.embedding-model/
