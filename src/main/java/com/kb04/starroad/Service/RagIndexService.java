@@ -54,11 +54,18 @@ public class RagIndexService {
     @Value("${starroad.rag.index-file:./rag-index.json}")
     private String indexFilePath;
 
+    /**
+     * true 면 저장된 색인을 무시하고 매 기동마다 DB 에서 새로 만든다.
+     * 데이터가 매번 바뀌는 인메모리 DB(dev 프로필)에서 켠다.
+     */
+    @Value("${starroad.rag.always-reindex:false}")
+    private boolean alwaysReindex;
+
     @EventListener(ApplicationReadyEvent.class)
     public void initIndex() {
         File indexFile = new File(indexFilePath);
         try {
-            if (indexFile.exists()) {
+            if (indexFile.exists() && !alwaysReindex) {
                 vectorStore.load(indexFile);
                 log.info("[RAG] 기존 색인을 불러왔다: {}", indexFile.getAbsolutePath());
             } else {

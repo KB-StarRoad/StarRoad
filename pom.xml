@@ -92,6 +92,12 @@
             <artifactId>ojdbc11</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <!-- dev 프로필 전용 인메모리 DB. Oracle 없이 로컬에서 띄워 보기 위한 것이다 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
