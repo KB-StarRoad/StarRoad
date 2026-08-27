@@ -4,7 +4,7 @@ import com.kb04.starroad.Dto.MemberDto;
 import lombok.*;
 
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Getter

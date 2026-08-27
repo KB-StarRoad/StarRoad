@@ -7,7 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.Formula;
 import org.springframework.lang.Nullable;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Getter
 @Entity

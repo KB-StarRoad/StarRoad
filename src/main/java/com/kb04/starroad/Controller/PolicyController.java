@@ -4,29 +4,30 @@ import com.kb04.starroad.Dto.MemberDto;
 import com.kb04.starroad.Dto.policy.PolicyRequestDto;
 import com.kb04.starroad.Dto.policy.PolicyResponseDto;
 import com.kb04.starroad.Service.PolicyService;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import springfox.documentation.annotations.ApiIgnore;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import java.util.*;
 
-@Api(tags = "청년정책 API")
+@Tag(name = "청년정책 API")
 @RequiredArgsConstructor
 @RestController
 public class PolicyController {
 
     private final PolicyService policyService;
 
-    @ApiOperation(value = "청년정책 찜", notes = "청년정책을 관심 정책으로 등록할 수 있다")
+    @Operation(summary = "청년정책 찜", description = "청년정책을 관심 정책으로 등록할 수 있다")
     @PostMapping("/starroad/policy")
-    public ModelAndView likePolicy(@ApiParam(value = "정책 번호", example = "1") @RequestParam("policyNo")int policyNo,
-                                   @ApiIgnore HttpSession session, @ApiIgnore HttpServletRequest request){
+    public ModelAndView likePolicy(@Parameter(description = "정책 번호", example = "1") @RequestParam("policyNo")int policyNo,
+                                   HttpSession session, HttpServletRequest request){
 
         ModelAndView mav = new ModelAndView();
         MemberDto memberDto = (MemberDto) session.getAttribute("currentUser");
@@ -41,11 +42,11 @@ public class PolicyController {
         return mav;
     }
 
-    @ApiOperation(value = "청년정책 조회", notes = "청년정책을 조회할 수 있다")
+    @Operation(summary = "청년정책 조회", description = "청년정책을 조회할 수 있다")
     @GetMapping("/starroad/policy")
     public ModelAndView policy(Model model,
-                               @ApiParam(value = "페이지 번호", example = "5") @RequestParam(value = "pageIndex", defaultValue = "1") int pageIndex,
-                               @ApiIgnore HttpSession session) {
+                               @Parameter(description = "페이지 번호", example = "5") @RequestParam(value = "pageIndex", defaultValue = "1") int pageIndex,
+                               HttpSession session) {
 
         List<PolicyResponseDto> result = policyService.selectAllPolicies();
         if(session.getAttribute("currentUser") != null){
@@ -62,17 +63,17 @@ public class PolicyController {
         return mav;
     }
 
-    @ApiOperation(value = "청년정책 검색", notes = "청년정책을 조건을 이용하여 검색할 수 있다")
+    @Operation(summary = "청년정책 검색", description = "청년정책을 조건을 이용하여 검색할 수 있다")
     @GetMapping("/starroad/policy/result")
     public ModelAndView getPolicyByForm(Model model,
-                                        @ApiParam(value = "페이지 번호", example = "5") @RequestParam(value = "pageIndex", defaultValue = "1") int pageIndex,
-                                        @ApiParam(required = false, value = "지역") @RequestParam(required = false) String location,
-                                        @ApiParam(required = false, value = "정책명 키워드") @RequestParam(required = false) String keyword,
-                                        @ApiParam(required = false, value = "금융지원 TAG") @RequestParam(required = false) String tag1,
-                                        @ApiParam(required = false, value = "교육 TAG") @RequestParam(required = false) String tag2,
-                                        @ApiParam(required = false, value = "생활지원 TAG") @RequestParam(required = false) String tag3,
-                                        @ApiParam(required = false, value = "금융자산 형성 TAG") @RequestParam(required = false) String tag4,
-                                        @ApiIgnore HttpSession session) {
+                                        @Parameter(description = "페이지 번호", example = "5") @RequestParam(value = "pageIndex", defaultValue = "1") int pageIndex,
+                                        @Parameter(required = false, description = "지역") @RequestParam(required = false) String location,
+                                        @Parameter(required = false, description = "정책명 키워드") @RequestParam(required = false) String keyword,
+                                        @Parameter(required = false, description = "금융지원 TAG") @RequestParam(required = false) String tag1,
+                                        @Parameter(required = false, description = "교육 TAG") @RequestParam(required = false) String tag2,
+                                        @Parameter(required = false, description = "생활지원 TAG") @RequestParam(required = false) String tag3,
+                                        @Parameter(required = false, description = "금융자산 형성 TAG") @RequestParam(required = false) String tag4,
+                                        HttpSession session) {
 
         ModelAndView mav = new ModelAndView("policy/policy_result");
         PolicyRequestDto requestDto = PolicyRequestDto.builder()

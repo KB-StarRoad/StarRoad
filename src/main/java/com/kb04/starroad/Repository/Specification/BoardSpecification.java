@@ -3,7 +3,7 @@ package com.kb04.starroad.Repository.Specification;
 import com.kb04.starroad.Entity.Board;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
 

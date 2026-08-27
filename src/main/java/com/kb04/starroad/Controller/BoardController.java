@@ -6,25 +6,24 @@ import com.kb04.starroad.Dto.board.CommentDto;
 import com.kb04.starroad.Entity.Board;
 import com.kb04.starroad.Service.BoardService;
 import com.kb04.starroad.Service.CommentService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import springfox.documentation.annotations.ApiIgnore;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
-@Api(tags = "게시판 API")
+@Tag(name = "게시판 API")
 @RestController
 public class BoardController {
 
@@ -39,7 +38,7 @@ public class BoardController {
     }
 
 
-    @ApiOperation(value = "게시판 메인", notes = "게시판 메인화면을 보여줍니다")
+    @Operation(summary = "게시판 메인", description = "게시판 메인화면을 보여줍니다")
     @GetMapping("/starroad/board/main")
     public ModelAndView boardList() {
         ModelAndView mav = new ModelAndView("board/main");
@@ -55,9 +54,9 @@ public class BoardController {
         return mav;
     }
 
-    @ApiOperation(value = "게시물 글쓰기 폼", notes = "게시물 글쓰기 폼으로 이동합니다")
+    @Operation(summary = "게시물 글쓰기 폼", description = "게시물 글쓰기 폼으로 이동합니다")
     @GetMapping("/starroad/board/write")
-    public ModelAndView board(@ApiIgnore HttpSession session, RedirectAttributes redirectAttributes) {
+    public ModelAndView board(HttpSession session, RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
         if (session.getAttribute("currentUser") == null) {
             redirectAttributes.addFlashAttribute("error", "게시물 쓰기는 로그인이 필요한 서비스입니다");
@@ -68,11 +67,11 @@ public class BoardController {
         return mav;
     }
 
-    @ApiOperation(value = "자유,인증 게시판", notes = "자유,인증 게시판으로 갈 수 있습니다.")
+    @Operation(summary = "자유,인증 게시판", description = "자유,인증 게시판으로 갈 수 있습니다.")
     @GetMapping("/starroad/board/free")
     public ModelAndView boardList(
-            @ApiParam(value = "게시글타입") @RequestParam(name = "type", defaultValue = "F") String type,
-            @ApiIgnore HttpServletRequest request) {
+            @Parameter(description = "게시글타입") @RequestParam(name = "type", defaultValue = "F") String type,
+            HttpServletRequest request) {
 
         ModelAndView mav = new ModelAndView("board/board");
 
@@ -94,10 +93,10 @@ public class BoardController {
         return mav;
     }
 
-    @ApiOperation(value = "인기게시판", notes = "인기게시판을 보여줍니다")
+    @Operation(summary = "인기게시판", description = "인기게시판을 보여줍니다")
     @GetMapping("/starroad/board/popular")
     public ModelAndView popularBoardList(
-            @ApiIgnore HttpServletRequest request) {
+            HttpServletRequest request) {
 
         ModelAndView mav = new ModelAndView("board/board");
 
@@ -109,11 +108,11 @@ public class BoardController {
         return mav;
     }
 
-    @ApiOperation(value = "게시글 수정 폼", notes = "게시글을 폼을 볼 수 있습니다")
+    @Operation(summary = "게시글 수정 폼", description = "게시글을 폼을 볼 수 있습니다")
     @GetMapping("/starroad/board/update")
     public ModelAndView updateBoard(
-            @ApiParam(value = "게시글 번호") @RequestParam("no") int no,
-            @ApiIgnore HttpSession session, RedirectAttributes redirectAttributes) {
+            @Parameter(description = "게시글 번호") @RequestParam("no") int no,
+            HttpSession session, RedirectAttributes redirectAttributes) {
 
         ModelAndView mav = new ModelAndView();
 
@@ -135,13 +134,13 @@ public class BoardController {
         return mav;
     }
 
-    @ApiOperation(value = "게시글 수정 기능", notes = "게시글을 수정할 수 있습니다")
+    @Operation(summary = "게시글 수정 기능", description = "게시글을 수정할 수 있습니다")
     @PostMapping("/starroad/board/updatepro")
     public ModelAndView updateBoardPro(
-            @ApiParam(value = "게시글 번호")@RequestParam("no") int no,
-            @ApiParam(value = "게시글 제목") @RequestParam("title") String title,
-            @ApiParam(value = "게시글 내용") @RequestParam("content") String content,
-            @ApiParam(value = "이미지") @RequestParam(value = "newImage") MultipartFile newImage) {
+            @Parameter(description = "게시글 번호")@RequestParam("no") int no,
+            @Parameter(description = "게시글 제목") @RequestParam("title") String title,
+            @Parameter(description = "게시글 내용") @RequestParam("content") String content,
+            @Parameter(description = "이미지") @RequestParam(value = "newImage") MultipartFile newImage) {
 
         ModelAndView errorModelAndView = new ModelAndView("error");
         ModelAndView modelAndView = new ModelAndView("redirect:/starroad/board/detail?no=" + no);
@@ -158,15 +157,15 @@ public class BoardController {
         }
     }
 
-    @ApiOperation(value = "게시글 작성", notes = "게시글을 작성할 수 있습니다")
+    @Operation(summary = "게시글 작성", description = "게시글을 작성할 수 있습니다")
     @PostMapping("/starroad/board/writepro")
     public ModelAndView boardWritePro(
-            @ApiIgnore HttpSession session, RedirectAttributes redirectAttributes,
-            @ApiParam(value = "게시글 종류") @RequestParam("type") String type,
-            @ApiParam(value = "게시글 상세 종류") @RequestParam("detailType") String detailType,
-            @ApiParam(value = "게시글 제목") @RequestParam("title") String title,
-            @ApiParam(value = "게시글 내용") @RequestParam("content") String content,
-            @ApiParam(value = "게시글 이미지") @RequestParam("image") MultipartFile imageFile
+            HttpSession session, RedirectAttributes redirectAttributes,
+            @Parameter(description = "게시글 종류") @RequestParam("type") String type,
+            @Parameter(description = "게시글 상세 종류") @RequestParam("detailType") String detailType,
+            @Parameter(description = "게시글 제목") @RequestParam("title") String title,
+            @Parameter(description = "게시글 내용") @RequestParam("content") String content,
+            @Parameter(description = "게시글 이미지") @RequestParam("image") MultipartFile imageFile
     ) {
 
         ModelAndView mav = new ModelAndView();
@@ -192,10 +191,10 @@ public class BoardController {
         }
     }
 
-    @ApiOperation(value = "게시글 삭제", notes = "게시글을 삭제할 수 있습니다")
+    @Operation(summary = "게시글 삭제", description = "게시글을 삭제할 수 있습니다")
     @GetMapping("/starroad/board/delete")
     public ModelAndView deleteBoard(
-            @ApiParam(value = "게시글 번호") @RequestParam Integer no, @ApiIgnore HttpSession session, RedirectAttributes redirectAttributes) {
+            @Parameter(description = "게시글 번호") @RequestParam Integer no, HttpSession session, RedirectAttributes redirectAttributes) {
 
         ModelAndView mav = new ModelAndView();
 
@@ -217,9 +216,9 @@ public class BoardController {
         return mav;
     }
 
-    @ApiOperation(value = "게시글 상세", notes = "게시글을 상세를 볼 수 있습니다")
+    @Operation(summary = "게시글 상세", description = "게시글을 상세를 볼 수 있습니다")
     @GetMapping("/starroad/board/detail")
-    public ModelAndView getBoardDetail(@ApiParam(value = "게시글 번호") @RequestParam("no") int no) {
+    public ModelAndView getBoardDetail(@Parameter(description = "게시글 번호") @RequestParam("no") int no) {
 
         ModelAndView mav = new ModelAndView();
         mav = new ModelAndView("board/detail");
@@ -232,11 +231,11 @@ public class BoardController {
         return mav;
     }
 
-    @ApiOperation(value = "게시글 추천", notes = "게시글을 추천할 수 있습니다")
+    @Operation(summary = "게시글 추천", description = "게시글을 추천할 수 있습니다")
     @PostMapping("/starroad/board/like")
     public ModelAndView handleLike(
-            @ApiParam(value = "게시글 번호") @RequestParam("board") int boardNo,
-            @ApiIgnore HttpSession session, RedirectAttributes redirectAttributes) {
+            @Parameter(description = "게시글 번호") @RequestParam("board") int boardNo,
+            HttpSession session, RedirectAttributes redirectAttributes) {
 
         ModelAndView mav = new ModelAndView();
         MemberDto memberDto = (MemberDto) session.getAttribute("currentUser");
