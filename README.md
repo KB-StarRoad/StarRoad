@@ -81,7 +81,7 @@ Oracle 없이 인메모리 H2와 샘플 데이터로 바로 띄울 수 있습니
 
 ```bash
 # 1) 로컬 LLM — API 키 불필요, 인터넷 없이 동작
-#    https://ollama.com/download 설치만 하면 모델은 기동 시 자동으로 받습니다
+#    https://ollama.com/download 설치만 하면 모델(기본값 exaone3.5:2.4b)은 기동 시 자동으로 받습니다
 mvnw spring-boot:run -Dspring-boot.run.profiles=dev,ollama
 
 # 2) Google Gemini — AI Studio 무료 키 (결제수단 등록 없음)
