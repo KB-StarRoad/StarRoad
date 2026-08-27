@@ -70,6 +70,16 @@
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-starter-model-anthropic</artifactId>
         </dependency>
+        <!-- Spring AI: 로컬 LLM. API 키 없이 내 PC 에서 돌린다 (ollama 프로필) -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-starter-model-ollama</artifactId>
+        </dependency>
+        <!-- Spring AI: Google Gemini. AI Studio 무료 키로 쓸 수 있다 (gemini 프로필) -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-starter-model-google-genai</artifactId>
+        </dependency>
         <!-- Spring AI: 임베딩은 JVM 내장 ONNX(외부 서버·API 키 불필요) -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
