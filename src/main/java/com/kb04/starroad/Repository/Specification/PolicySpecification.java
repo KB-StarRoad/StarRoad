@@ -3,8 +3,8 @@ package com.kb04.starroad.Repository.Specification;
 import com.kb04.starroad.Entity.Policy;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Predicate;
 import java.util.*;
 
 

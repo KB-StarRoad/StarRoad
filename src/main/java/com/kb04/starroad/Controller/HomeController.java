@@ -3,26 +3,25 @@ package com.kb04.starroad.Controller;
 import com.kb04.starroad.Dto.MemberDto;
 import com.kb04.starroad.Dto.policy.PolicyResponseDto;
 import com.kb04.starroad.Service.PolicyService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import springfox.documentation.annotations.ApiIgnore;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
-@Api(tags = {"홈 API"})
+@Tag(name = "홈 API")
 @RequiredArgsConstructor
 @RestController
 public class HomeController {
 
     private final PolicyService policyService;
 
-    @ApiOperation(value = "home", notes = "홈")
+    @Operation(summary = "home", description = "홈")
     @GetMapping("/starroad")
-    public ModelAndView home(@ApiIgnore HttpSession session) {
+    public ModelAndView home(HttpSession session) {
 
         ModelAndView mav;
         if (session.getAttribute("currentUser") == null) {

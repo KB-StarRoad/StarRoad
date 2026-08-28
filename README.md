@@ -11,8 +11,9 @@
 |||
 |---|---|
 | **Frontend** |<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=white"> <img src="https://img.shields.io/badge/jsp-004088?style=for-the-badge&logo=jsp&logoColor=white"> |
-| **Backend** | <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=SpringBoot&logoColor=white"> <img src="https://img.shields.io/badge/MAven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white"> <img src="https://img.shields.io/badge/spring data jpa-6DB33F?style=for-the-badge&logo=SpringBoot&logoColor=white"> |
-| **Database** | <img src="https://img.shields.io/badge/oracle-F80000?style=for-the-badge&logo=oracle&logoColor=white"> |
+| **Backend** | <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=SpringBoot&logoColor=white"> <img src="https://img.shields.io/badge/MAven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white"> <img src="https://img.shields.io/badge/spring data jpa-6DB33F?style=for-the-badge&logo=SpringBoot&logoColor=white"> <img src="https://img.shields.io/badge/java 21-007396?style=for-the-badge&logo=openjdk&logoColor=white"> |
+| **AI** | <img src="https://img.shields.io/badge/spring ai-6DB33F?style=for-the-badge&logo=SpringBoot&logoColor=white"> <img src="https://img.shields.io/badge/ollama-000000?style=for-the-badge&logo=ollama&logoColor=white"> <img src="https://img.shields.io/badge/onnx runtime-005CED?style=for-the-badge&logo=onnx&logoColor=white"> |
+| **Database** | <img src="https://img.shields.io/badge/oracle-F80000?style=for-the-badge&logo=oracle&logoColor=white"> <img src="https://img.shields.io/badge/h2-1021FF?style=for-the-badge&logo=h2&logoColor=white"> |
 | **Tool** | <img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white"> <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"> <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white"> |
 |||
 
@@ -41,6 +42,60 @@
 관심 있는 정책을 '즐겨찾기'할 수 있습니다. 
 관심 정책의 마감 날짜가 임박 시 홈 화면에서 알림을 제공합니다.
 
+### 🍿 AI 정책 상담 챗봇 (RAG)
+등록된 청년정책·예적금 상품 데이터에서 근거를 찾아 답변하는 챗봇입니다.
+
+일반적인 챗봇은 모르는 것을 그럴듯하게 지어냅니다. 금융 정책은 숫자 하나가 틀리면 
+사용자가 실제로 손해를 보기 때문에, 환각상태를 방지하는 RAG기반 ChatBot을 개발했습니다.
+
+<br/>
+
+## 🐳 환각(Hallucination)을 막는 4단계
+
+| | 방어 | 동작 |
+|---|---|---|
+| **L1** | 검색 게이트 | 유사도가 기준(0.83) 미만이면 **LLM을 호출조차 하지 않고** 답변을 거부합니다. 묻지 않으면 지어낼 기회가 없습니다. |
+| **L2** | 컨텍스트 한정 | 검색된 자료 밖의 지식 사용을 프롬프트로 금지합니다. |
+| **L3** | 인용 검증 | 답변의 `[n]` 인용번호를 파싱해 실제 DB 레코드와 연결합니다. 범위를 벗어난 번호는 버리고, 하나도 인용하지 않으면 화면에 경고를 띄웁니다. |
+| **L4** | 숫자 비위임 | 금리·기간은 DB 원본값을 출처 카드에 그대로 실어, LLM이 쓴 숫자와 화면에서 대조되게 합니다. |
+
+L1의 임계값 0.83은 짐작이 아니라 실측값입니다. `RagRetrievalCalibrationTest`로 측정한 결과 
+관련 질문은 0.872~0.911, 무관한 질문은 0.778~0.797이 나왔습니다. 
+임베딩 모델 특성상 무관한 문장도 0.78 근처가 나오기 때문에, 임계값을 낮게 잡으면 
+"오늘 날씨 어때?"(0.797) 같은 질문이 게이트를 통과해 L1이 무력해집니다.
+
+**실측 동작**
+
+| 질문 | 결과 |
+|---|---|
+| "서울 사는 청년인데 월세 지원 받을 수 있는 정책 있어?" | 13.2초 · 근거 자료의 조건을 정확히 인용해 답변 |
+| "KB청년희망적금 최고 금리가 몇 퍼센트야?" | 연 5.00% / 최소 10,000원 — DB 원본과 일치 |
+| "부산시 월세 지원 정책 조건이 어떻게 돼?" | 자료에 없다고 답하고 **지어내지 않음** (L1 통과 → L2가 차단) |
+| "오늘 서울 날씨 어때?" | **0.069초** — L1에서 차단, LLM 미호출 |
+
+<br/>
+
+## 🐳 챗봇 실행 방법
+
+Oracle 없이 인메모리 H2와 샘플 데이터로 바로 띄울 수 있습니다.
+
+```bash
+# 1) 로컬 LLM — API 키 불필요, 인터넷 없이 동작
+#    https://ollama.com/download 설치만 하면 모델(기본값 exaone3.5:2.4b)은 기동 시 자동으로 받습니다
+mvnw spring-boot:run -Dspring-boot.run.profiles=dev,ollama
+
+# 2) Google Gemini — AI Studio 무료 키 (결제수단 등록 없음)
+set GEMINI_API_KEY=...
+mvnw spring-boot:run -Dspring-boot.run.profiles=dev,gemini
+
+# 3) Anthropic Claude
+set ANTHROPIC_API_KEY=...
+mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+```
+
+생성 모델은 `spring.ai.model.chat` 하나로 갈아끼웁니다. **임베딩은 어느 쪽이든 JVM 내장 
+ONNX(multilingual-e5-small)를 쓰므로 외부 API를 타지 않습니다.** 따라서 `ollama` 프로필은 
+검색·생성 양쪽 모두 로컬에서 돌아 외부 의존이 0입니다.
 
 <br/>
 

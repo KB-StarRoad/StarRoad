@@ -5,18 +5,20 @@ import com.kb04.starroad.Dto.product.BaseRateDto;
 import com.kb04.starroad.Dto.product.ConditionDto;
 import com.kb04.starroad.Dto.product.ProductResponseDto;
 import com.kb04.starroad.Service.ProductService;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Api(tags = {"예적금 상품 API"})
+@Tag(name = "예적금 상품 API")
 @RestController
 public class ProductController {
     private final ProductService productService;
@@ -27,11 +29,11 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @ApiOperation(value = "예적금 상품 조회", notes = "예적금 상품을 조회할 수 있다")
+    @Operation(summary = "예적금 상품 조회", description = "예적금 상품을 조회할 수 있다")
     @GetMapping("/starroad/product")
     public ModelAndView product(
             Model model,
-            @ApiParam(value = "페이지 번호", example = "1") @RequestParam(defaultValue = "1") int page,
+            @Parameter(description = "페이지 번호", example = "1") @RequestParam(defaultValue = "1") int page,
             HttpServletRequest request) {
         MemberDto member = getLoginMember(request);
         List<ProductResponseDto> productList = null;
@@ -50,15 +52,15 @@ public class ProductController {
         return mav;
     }
 
-    @ApiOperation(value = "예적금 상품 검색", notes = "예적금 상품을 검색할 수 있다")
+    @Operation(summary = "예적금 상품 검색", description = "예적금 상품을 검색할 수 있다")
     @GetMapping("/starroad/product/result")
     public ModelAndView product_search_result(
             Model model,
-            @ApiParam(value = "상품 유형", example = "S") @RequestParam(required = false) String type,
-            @ApiParam(value = "최대 가능 가입 기간", example = "36") @RequestParam(required = false) String period,
-            @ApiParam(value = "이자 과세") @RequestParam(required = false) String rate,
-            @ApiParam(value = "상품명", example = "KB") @RequestParam(required = false) String query,
-            @ApiParam(value = "페이지 번호", example = "1") @RequestParam(defaultValue = "1") int page,
+            @Parameter(description = "상품 유형", example = "S") @RequestParam(required = false) String type,
+            @Parameter(description = "최대 가능 가입 기간", example = "36") @RequestParam(required = false) String period,
+            @Parameter(description = "이자 과세") @RequestParam(required = false) String rate,
+            @Parameter(description = "상품명", example = "KB") @RequestParam(required = false) String query,
+            @Parameter(description = "페이지 번호", example = "1") @RequestParam(defaultValue = "1") int page,
             HttpServletRequest request) {
 
         MemberDto member = getLoginMember(request);

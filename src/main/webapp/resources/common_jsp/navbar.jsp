@@ -26,6 +26,7 @@
                 <li><a href="/starroad/product">금융상품</a></li>
                 <li><a href="/starroad/policy">청년정책</a></li>
                 <li><a href="/starroad/board/main">커뮤니티</a></li>
+                <li><a href="/starroad/chat">AI 상담</a></li>
             </ul>
         </div>
 

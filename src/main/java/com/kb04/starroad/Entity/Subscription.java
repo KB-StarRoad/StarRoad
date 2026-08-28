@@ -5,7 +5,7 @@ import com.kb04.starroad.Dto.SubProdDto;
 import com.kb04.starroad.Dto.SubscriptionDto;
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Getter

@@ -4,7 +4,7 @@ import com.kb04.starroad.Entity.PaymentLog;
 import com.kb04.starroad.Entity.Subscription;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.*;
+import jakarta.persistence.criteria.*;
 
 public class SubscriptionSpecification {
     public static Specification<Subscription> getSubscriptions(int userNo) {
