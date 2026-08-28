@@ -4,7 +4,7 @@ import com.kb04.starroad.Entity.BaseRate;
 import com.kb04.starroad.Entity.Product;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.*;
+import jakarta.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 

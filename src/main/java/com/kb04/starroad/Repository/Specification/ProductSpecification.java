@@ -5,7 +5,7 @@ import com.kb04.starroad.Entity.Product;
 import com.kb04.starroad.Entity.Subscription;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.Order;
+import jakarta.persistence.criteria.Order;
 import java.util.ArrayList;
 import java.util.List;
 
