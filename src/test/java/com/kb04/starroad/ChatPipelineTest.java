@@ -60,7 +60,7 @@ class ChatPipelineTest {
 
         RagRetrievalAdvisor retrieval = new RagRetrievalAdvisor(vectorStore);
         ReflectionTestUtils.setField(retrieval, "topK", 4);
-        ReflectionTestUtils.setField(retrieval, "similarityThreshold", 0.83);
+        ReflectionTestUtils.setField(retrieval, "similarityThreshold", 0.85);
 
         GuardrailAdvisor guardrail = new GuardrailAdvisor(new GuardrailRules(), meterRegistry);
 

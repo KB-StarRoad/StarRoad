@@ -54,9 +54,9 @@ public class RagRetrievalAdvisor implements CallAdvisor {
      *
      * <p>multilingual-e5 는 무관한 문장끼리도 0.78 안팎이 나오는 특성이 있어
      * 임계값을 낮게 잡으면 게이트가 그대로 무력해진다.
-     * {@code RagRetrievalCalibrationTest} 실측으로 정했다.
+     * {@code RagRetrievalCalibrationTest}·{@code RagRetrievalEvalTest} 실측으로 정했다.
      */
-    @Value("${starroad.rag.similarity-threshold:0.83}")
+    @Value("${starroad.rag.similarity-threshold:0.85}")
     private double similarityThreshold;
 
     public RagRetrievalAdvisor(VectorStore vectorStore) {
