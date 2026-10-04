@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductResponseDto {
-    
+
     private int no;
     private Character type;
     private String attribute;
@@ -30,19 +30,21 @@ public class ProductResponseDto {
 
     private String link;
 
-    public Product toEntity() {
-        return Product.builder()
-                .no(no)
-                .type(type)
-                .attribute(attribute)
-                .name(name)
-                .explain(explain)
-                .maxRate(maxRate)
-                .maxRatePeriod(maxRatePeriod)
-                .maxPeriod(maxPeriod)
-                .maxConditionRate(maxConditionRate)
-                .link(link)
-                .maxPrice(maxPrice)
+    /** 로그인한 회원 기준 만기 예상 금액. 비로그인이거나 납입 가능액이 없으면 null */
+    private MaturityEstimateDto estimate;
+
+    public static ProductResponseDto from(Product product) {
+        return ProductResponseDto.builder()
+                .no(product.getNo())
+                .type(product.getType())
+                .attribute(product.getAttribute())
+                .name(product.getName())
+                .explain(product.getExplain())
+                .maxRate(product.getMaxRate())
+                .maxRatePeriod(product.getMaxRatePeriod())
+                .maxConditionRate(product.getMaxConditionRate())
+                .maxPeriod(product.getMaxPeriod())
+                .link(product.getLink())
                 .build();
     }
 
